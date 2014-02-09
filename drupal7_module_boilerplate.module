@@ -31,7 +31,7 @@ function drupal7_module_boilerplate_contents()
 function drupal7_module_boilerplate_menu()
 {
     $items['articles'] = array(
-        'title' => 'Sitemap',
+        'title' => 'Articles',
         'page callback' => 'drupal7_module_boilerplate_custompage',
         'access callback' => 'drupal7_module_boilerplate_access',
         'access arguments' => array()
