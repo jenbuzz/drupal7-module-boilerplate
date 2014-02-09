@@ -1,0 +1,3 @@
+name = Drupal 7 Module Boilerplate
+description = This is boilerplate for a custom Drupal 7 module
+core = 7.x
