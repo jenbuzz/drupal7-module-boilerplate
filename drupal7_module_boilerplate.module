@@ -11,3 +11,48 @@ function drupal7_module_boilerplate_help($path, $arg)
     }
 }
 
+function drupal7_module_boilerplate_theme()
+{
+    return array(
+        'drupal7_module_boilerplate-custompage' => array(
+            'template' => 'drupal7_module_boilerplate-custompage',
+            'variables' => array('items'=>NULL)
+        )
+    );
+}
+
+function drupal7_module_boilerplate_contents()
+{
+    $result = db_query("SELECT n.nid, n.title, n.created FROM node AS n WHERE n.status=1 AND n.type='article' ORDER BY n.created DESC");
+
+    return $result;
+}
+
+function drupal7_module_boilerplate_menu()
+{
+    $items['articles'] = array(
+        'title' => 'Sitemap',
+        'page callback' => 'drupal7_module_boilerplate_custompage',
+        'access callback' => 'drupal7_module_boilerplate_access',
+        'access arguments' => array()
+    );
+
+    return $items;
+}
+
+function drupal7_module_boilerplate_access()
+{
+    return true;
+}
+
+function drupal7_module_boilerplate_custompage()
+{
+    $result = drupal7_module_boilerplate_contents();
+    $items = array();
+    foreach( $result as $node ) {
+        $items[] = array('title' => $node->title, 'url' => drupal_get_path_alias('node/' . $node->nid), 'date' => format_date($node->created, 'medium', 'd.m.Y'));
+    }
+
+    return theme('drupal7_module_boilerplate-custompage', array('items' => $items));
+}
+
