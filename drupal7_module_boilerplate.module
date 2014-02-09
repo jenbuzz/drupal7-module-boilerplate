@@ -1,0 +1,13 @@
+<?php
+
+function drupal7_module_boilerplate_help($path, $arg)
+{
+    switch ($path) {
+        // Add help text to a custom path - in this case the custom types overview page.
+        case 'admin/structure/types':
+            $output = '<h2>' . t('Help is near: Content Types') . '</h2>';
+            $output .= '<p>' . t('On this page you can see available content types and create new ones if necessary.') . '</p>';
+            return $output;
+    }
+}
+
