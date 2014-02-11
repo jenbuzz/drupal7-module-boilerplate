@@ -56,3 +56,22 @@ function drupal7_module_boilerplate_custompage()
     return theme('drupal7_module_boilerplate-custompage', array('items' => $items));
 }
 
+function drupal7_module_boilerplate_views_api()
+{
+    return array(
+        'api' => '3.0'
+    );
+}
+
+function drupal7_module_boilerplate_views_default_views()
+{
+    $views = array();
+
+    $path = './' . drupal_get_path('module', 'drupal7_module_boilerplate') . '/views/*.inc';
+    foreach (glob($path) as $views_filename) {
+        require_once($views_filename);
+    }
+
+    return $views;
+}
+
