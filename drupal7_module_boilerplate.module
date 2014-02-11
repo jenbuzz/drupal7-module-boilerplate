@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Implements hook_help()
+ */
 function drupal7_module_boilerplate_help($path, $arg)
 {
     switch ($path) {
@@ -11,6 +14,9 @@ function drupal7_module_boilerplate_help($path, $arg)
     }
 }
 
+/**
+ * Implements hook_theme()
+ */
 function drupal7_module_boilerplate_theme()
 {
     return array(
@@ -21,6 +27,11 @@ function drupal7_module_boilerplate_theme()
     );
 }
 
+/**
+ * Helper function for getting content.
+ *
+ * !!!Not required!!!
+ */
 function drupal7_module_boilerplate_contents()
 {
     $result = db_query("SELECT n.nid, n.title, n.created FROM node AS n WHERE n.status=1 AND n.type='article' ORDER BY n.created DESC");
@@ -28,6 +39,9 @@ function drupal7_module_boilerplate_contents()
     return $result;
 }
 
+/**
+ * Implements hook_menu()
+ */
 function drupal7_module_boilerplate_menu()
 {
     $items['articles'] = array(
@@ -40,11 +54,17 @@ function drupal7_module_boilerplate_menu()
     return $items;
 }
 
+/**
+ * Access callback function. Defined in drupal7_module_boilerplate_menu().
+ */
 function drupal7_module_boilerplate_access()
 {
     return true;
 }
 
+/**
+ * Page callback function. Defined in drupal7_module_boilerplate_menu().
+ */
 function drupal7_module_boilerplate_custompage()
 {
     $result = drupal7_module_boilerplate_contents();
@@ -56,6 +76,9 @@ function drupal7_module_boilerplate_custompage()
     return theme('drupal7_module_boilerplate-custompage', array('items' => $items));
 }
 
+/**
+ * Implements hook_views_api()
+ */
 function drupal7_module_boilerplate_views_api()
 {
     return array(
@@ -63,6 +86,9 @@ function drupal7_module_boilerplate_views_api()
     );
 }
 
+/**
+ * Implements hook_views_default_views()
+ */
 function drupal7_module_boilerplate_views_default_views()
 {
     $views = array();
