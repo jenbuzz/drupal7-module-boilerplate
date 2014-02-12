@@ -23,6 +23,10 @@ function drupal7_module_boilerplate_theme()
         'drupal7_module_boilerplate-custompage' => array(
             'template' => 'drupal7_module_boilerplate-custompage',
             'variables' => array('items'=>NULL)
+        ),
+        'drupal7_module_boilerplate-block' => array(
+            'template' => 'drupal7_module_boilerplate-block',
+            'variables' => array('items'=>NULL)
         )
     );
 }
@@ -74,6 +78,43 @@ function drupal7_module_boilerplate_custompage()
     }
 
     return theme('drupal7_module_boilerplate-custompage', array('items' => $items));
+}
+
+/**
+ * Implements hook_block_info()
+ */
+function drupal7_module_boilerplate_block_info()
+{
+    $blocks['d7_boilerplate-articles'] = array(
+        'info' => t('Drupal 7 Module Boilerplate'),
+        'cache' => DRUPAL_CACHE_PER_ROLE,
+    );
+    return $blocks;
+}
+
+/**
+ * Implements hook_block_view()
+ */
+function drupal7_module_boilerplate_block_view($delta='')
+{
+    switch ($delta) {
+        case 'd7_boilerplate-articles':
+            $block['subject'] = t('Articles');
+            if (user_access('access content')) {
+                $result = drupal7_module_boilerplate_contents();
+                $items = array();
+                foreach ($result as $node) {
+                    $items[] = array('link' => l($node->title, 'node/' . $node->nid));
+                }
+
+                if (empty($items)) {
+                    $block['content'] = t('No articles available.');
+                } else {
+                    $block['content'] = theme( 'drupal7_module_boilerplate-block', array('items' => $items) );
+                }
+            }
+            return $block;
+    }
 }
 
 /**
