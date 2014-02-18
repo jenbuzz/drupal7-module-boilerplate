@@ -55,6 +55,13 @@ function drupal7_module_boilerplate_menu()
         'access arguments' => array()
     );
 
+    $items['articles/autocomplete'] = array(
+        'page callback' => 'drupal7_module_boilerplate_autocomplete',
+        'access callback' => 'drupal7_module_boilerplate_access',
+        'access arguments' => array(),
+        'type' => MENU_CALLBACK
+    );
+
     return $items;
 }
 
@@ -128,7 +135,8 @@ function drupal7_module_boilerplate_form($form, &$form_state)
     $form['textfield'] = array(
         '#name' => 'text',
         '#type' => 'textfield',
-        '#size' => '10'
+        '#size' => '10',
+        '#autocomplete_path' => 'articles/autocomplete'
     );
  
     $form['submit'] = array(
@@ -137,6 +145,15 @@ function drupal7_module_boilerplate_form($form, &$form_state)
     );
     
     return $form;
+}
+
+/**
+ * Helper function for autocomplete results.
+ * @see drupal7_module_boilerplate_menu()
+ */
+function drupal7_module_boilerplate_autocomplete()
+{
+    return drupal_json_output(array('lorem ipsum'=>'lorem ipsum', 'test'=>'test', 'lorem test'=>'lorem test'));
 }
 
 /**
