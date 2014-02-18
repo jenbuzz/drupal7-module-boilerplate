@@ -26,7 +26,7 @@ function drupal7_module_boilerplate_theme()
         ),
         'drupal7_module_boilerplate-block' => array(
             'template' => 'drupal7_module_boilerplate-block',
-            'variables' => array('items'=>NULL)
+            'variables' => array('items'=>NULL, 'form'=>NULL)
         )
     );
 }
@@ -110,11 +110,33 @@ function drupal7_module_boilerplate_block_view($delta='')
                 if (empty($items)) {
                     $block['content'] = t('No articles available.');
                 } else {
-                    $block['content'] = theme( 'drupal7_module_boilerplate-block', array('items' => $items) );
+                    $block['content'] = theme( 'drupal7_module_boilerplate-block', array('items' => $items, 'form' => drupal_get_form('drupal7_module_boilerplate_form')) );
                 }
             }
             return $block;
     }
+}
+
+/**
+ * Implements hook_form()
+ *
+ */
+function drupal7_module_boilerplate_form($form, &$form_state)
+{
+    $form = array();
+ 
+    $form['textfield'] = array(
+        '#name' => 'text',
+        '#type' => 'textfield',
+        '#size' => '10'
+    );
+ 
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Submit'
+    );
+    
+    return $form;
 }
 
 /**
@@ -141,4 +163,6 @@ function drupal7_module_boilerplate_views_default_views()
 
     return $views;
 }
+
+
 

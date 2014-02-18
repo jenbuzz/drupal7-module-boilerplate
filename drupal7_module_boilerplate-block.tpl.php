@@ -8,4 +8,6 @@
 
     ?>
     </ul>
+
+    <?php echo render($form); ?>
 </div>
