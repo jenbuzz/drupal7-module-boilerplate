@@ -193,5 +193,29 @@ function drupal7_module_boilerplate_views_default_views()
     return $views;
 }
 
+/**
+ * Implements hook_ctools_plugin_api()
+ * Lets ctools know that this plugin has something for it.
+ */
+function drupal7_module_boilerplate_ctools_plugin_api($module, $api)
+{
+    if ($module == 'page_manager' && $api == 'pages_default') {
+        return array('version' => 1);
+    }
+}
 
+/**
+ * Adds all pages/panels from panels directory to $pages array.
+ * The pages are visible in the page manager with the note "in code".
+ */
+function drupal7_module_boilerplate_default_page_manager_pages()
+{
+    $pages = array();
+    $path = './' . drupal_get_path('module', 'drupal7_module_boilerplate') . '/panels/*.inc';
+    foreach (glob($path) as $panels_filename) {
+        require_once($panels_filename);
+        $pages[$page->name] = $page;
+    }
+    return $pages;
+}
 
