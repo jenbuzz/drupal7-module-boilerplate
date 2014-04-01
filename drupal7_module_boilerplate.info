@@ -3,6 +3,7 @@ description = This is boilerplate for a custom Drupal 7 module
 core = 7.x
 
 dependencies[] = ctools
+dependencies[] = page_manager
 dependencies[] = views
 dependencies[] = panels
 
