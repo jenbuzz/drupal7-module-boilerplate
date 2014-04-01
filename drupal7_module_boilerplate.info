@@ -2,7 +2,9 @@ name = Drupal 7 Module Boilerplate
 description = This is boilerplate for a custom Drupal 7 module
 core = 7.x
 
+dependencies[] = ctools
 dependencies[] = views
+dependencies[] = panels
 
 stylesheets[all][] = css/drupal7_module_boilerplate.css
 
