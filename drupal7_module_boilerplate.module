@@ -85,10 +85,17 @@ function drupal7_module_boilerplate_access()
  */
 function drupal7_module_boilerplate_custompage()
 {
-    $result = drupal7_module_boilerplate_contents();
-    $items = array();
-    foreach( $result as $node ) {
-        $items[] = array('title' => $node->title, 'url' => drupal_get_path_alias('node/' . $node->nid), 'date' => format_date($node->created, 'medium', 'd.m.Y'));
+    if ($cachedItems = cache_get('drupal7_module_boilerplate:items')) {
+        $items = $cachedItems->data;
+    } else {
+        $result = drupal7_module_boilerplate_contents();
+        $items = array();
+        foreach( $result as $node ) {
+            $items[] = array('title' => $node->title, 'url' => drupal_get_path_alias('node/' . $node->nid), 'date' => format_date($node->created, 'medium', 'd.m.Y'));
+        }
+
+        // adding items to default cache and setting it to expire after 5mins
+        $items = cache_set('drupal7_module_boilerplate:items', $items, 'cache', time()+300);
     }
 
     // pass $items to templat drupal7_module_boilerplate-custompagee.tpl.php
