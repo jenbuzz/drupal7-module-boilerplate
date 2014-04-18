@@ -41,7 +41,7 @@ function drupal7_module_boilerplate_theme()
  */
 function drupal7_module_boilerplate_contents()
 {
-    $result = db_query("SELECT n.nid, n.title, n.created FROM node AS n WHERE n.status=1 AND n.type='article' ORDER BY n.created DESC");
+    $result = db_query("SELECT n.nid, n.title, n.created FROM node AS n WHERE n.status=1 AND n.type='article' ORDER BY n.created DESC LIMIT ".variable_get('drupal7_module_boilerplate_limit', 10));
 
     return $result;
 }
@@ -68,6 +68,33 @@ function drupal7_module_boilerplate_menu()
         'access arguments' => array(),
         'type' => MENU_CALLBACK
     );
+
+    // setting up a custom section under admin/config
+    if (!isset($items['admin/config/modules'])) {
+        $items['admin/config/modules'] = array(
+            'title' => 'Modules',
+            'description' => 'Module configuration',
+            'position' => 'left',
+            'weight' => 100,
+            'page callback' => 'system_admin_menu_block_page',
+            'access arguments' => array('administer site configuration'),
+            'file' => 'system.admin.inc',
+            'file path' => drupal_get_path('module', 'system')
+        );
+    }
+
+    // setting up a custom configuration page
+    // @see file drupal7_module_boilerplate.admin.inc
+    $items['admin/config/modules/drupal7moduleboilerplate'] = array(
+        'title' => 'Drupal 7 module boilerplate configuration',
+        'description' => 'Configure how the module Drupal 7 module boilerplate works',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('drupal7_module_boilerplate_admin_settings'),
+        'access arguments' => array('administer site configuration'),
+        'weight' => 0,
+        'file' => 'drupal7_module_boilerplate.admin.inc'
+    );
+
 
     return $items;
 }
