@@ -122,7 +122,7 @@ function drupal7_module_boilerplate_custompage()
         }
 
         // adding items to default cache and setting it to expire after 5mins
-        $items = cache_set('drupal7_module_boilerplate:items', $items, 'cache', time()+300);
+        cache_set('drupal7_module_boilerplate:items', $items, 'cache', time()+300);
     }
 
     // pass $items to templat drupal7_module_boilerplate-custompagee.tpl.php
