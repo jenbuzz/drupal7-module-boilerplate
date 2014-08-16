@@ -3,35 +3,33 @@
 /**
  * Implements hook_help()
  */
-function drupal7_module_boilerplate_help($path, $arg)
-{
-    switch ($path) {
-        // Add help text to a custom path - in this case the custom types overview page.
-        case 'admin/structure/types':
-            $output = '<h2>' . t('Help is near: Content Types') . '</h2>';
-            $output .= '<p>' . t('On this page you can see available content types and create new ones if necessary.') . '</p>';
-            return $output;
-    }
+function drupal7_module_boilerplate_help($path, $arg) {
+  switch ($path) {
+    // Add help text to a custom path - in this case the custom types overview page.
+    case 'admin/structure/types':
+      $output = '<h2>' . t('Help is near: Content Types') . '</h2>';
+      $output .= '<p>' . t('On this page you can see available content types and create new ones if necessary.') . '</p>';
+      return $output;
+  }
 }
 
 /**
  * Implements hook_theme()
  */
-function drupal7_module_boilerplate_theme()
-{
-    return array(
-        // add template for custom page
-        'drupal7_module_boilerplate-custompage' => array(
-            'template' => 'drupal7_module_boilerplate-custompage',
-            'variables' => array('items'=>NULL)
-        ),
+function drupal7_module_boilerplate_theme() {
+  return array(
+    // add template for custom page
+    'drupal7_module_boilerplate-custompage' => array(
+      'template' => 'drupal7_module_boilerplate-custompage',
+      'variables' => array('items'=>NULL),
+    ),
 
-        // add template for block
-        'drupal7_module_boilerplate-block' => array(
-            'template' => 'drupal7_module_boilerplate-block',
-            'variables' => array('items'=>NULL, 'form'=>NULL)
-        )
-    );
+    // add template for block
+    'drupal7_module_boilerplate-block' => array(
+      'template' => 'drupal7_module_boilerplate-block',
+      'variables' => array('items'=>NULL, 'form'=>NULL),
+    )
+  );
 }
 
 /**
@@ -39,132 +37,131 @@ function drupal7_module_boilerplate_theme()
  *
  * !!!Not required!!!
  */
-function drupal7_module_boilerplate_contents()
-{
-    $result = db_query("SELECT n.nid, n.title, n.created FROM node AS n WHERE n.status=1 AND n.type='article' ORDER BY n.created DESC LIMIT ".variable_get('drupal7_module_boilerplate_limit', 10));
+function drupal7_module_boilerplate_contents() {
+  $result = db_query("SELECT n.nid, n.title, n.created FROM node AS n WHERE n.status=1 AND n.type='article' ORDER BY n.created DESC LIMIT ".variable_get('drupal7_module_boilerplate_limit', 10));
 
-    return $result;
+  return $result;
 }
 
 /**
  * Implements hook_menu()
  */
-function drupal7_module_boilerplate_menu()
-{
-    // setting up a custom page under the path /articles
-    // @see drupal7_module_boilerplate_custompage
-    $items['articles'] = array(
-        'title' => 'Articles',
-        'page callback' => 'drupal7_module_boilerplate_custompage',
-        'access callback' => 'drupal7_module_boilerplate_access',
-        'access arguments' => array()
+function drupal7_module_boilerplate_menu() {
+  // setting up a custom page under the path /articles
+  // @see drupal7_module_boilerplate_custompage
+  $items['articles'] = array(
+    'title' => 'Articles',
+    'page callback' => 'drupal7_module_boilerplate_custompage',
+    'access callback' => 'drupal7_module_boilerplate_access',
+    'access arguments' => array(),
+  );
+
+  // setting up a path for autocomplete use under /articles/autocomplete
+  // @see drupal7_module_boilerplate_autocomplete()
+  $items['articles/autocomplete'] = array(
+    'page callback' => 'drupal7_module_boilerplate_autocomplete',
+    'access callback' => 'drupal7_module_boilerplate_access',
+    'access arguments' => array(),
+    'type' => MENU_CALLBACK,
+  );
+
+  // setting up a custom section under admin/config
+  if (!isset($items['admin/config/modules'])) {
+    $items['admin/config/modules'] = array(
+      'title' => 'Modules',
+      'description' => 'Module configuration',
+      'position' => 'left',
+      'weight' => 100,
+      'page callback' => 'system_admin_menu_block_page',
+      'access arguments' => array('administer site configuration'),
+      'file' => 'system.admin.inc',
+      'file path' => drupal_get_path('module', 'system'),
     );
+  }
 
-    // setting up a path for autocomplete use under /articles/autocomplete
-    // @see drupal7_module_boilerplate_autocomplete()
-    $items['articles/autocomplete'] = array(
-        'page callback' => 'drupal7_module_boilerplate_autocomplete',
-        'access callback' => 'drupal7_module_boilerplate_access',
-        'access arguments' => array(),
-        'type' => MENU_CALLBACK
-    );
+  // setting up a custom configuration page
+  // @see file drupal7_module_boilerplate.admin.inc
+  $items['admin/config/modules/drupal7moduleboilerplate'] = array(
+    'title' => 'Drupal 7 module boilerplate configuration',
+    'description' => 'Configure how the module Drupal 7 module boilerplate works',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drupal7_module_boilerplate_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'weight' => 0,
+    'file' => 'drupal7_module_boilerplate.admin.inc',
+  );
 
-    // setting up a custom section under admin/config
-    if (!isset($items['admin/config/modules'])) {
-        $items['admin/config/modules'] = array(
-            'title' => 'Modules',
-            'description' => 'Module configuration',
-            'position' => 'left',
-            'weight' => 100,
-            'page callback' => 'system_admin_menu_block_page',
-            'access arguments' => array('administer site configuration'),
-            'file' => 'system.admin.inc',
-            'file path' => drupal_get_path('module', 'system')
-        );
-    }
-
-    // setting up a custom configuration page
-    // @see file drupal7_module_boilerplate.admin.inc
-    $items['admin/config/modules/drupal7moduleboilerplate'] = array(
-        'title' => 'Drupal 7 module boilerplate configuration',
-        'description' => 'Configure how the module Drupal 7 module boilerplate works',
-        'page callback' => 'drupal_get_form',
-        'page arguments' => array('drupal7_module_boilerplate_admin_settings'),
-        'access arguments' => array('administer site configuration'),
-        'weight' => 0,
-        'file' => 'drupal7_module_boilerplate.admin.inc'
-    );
-
-
-    return $items;
+  return $items;
 }
 
 /**
  * Access callback function. Defined in drupal7_module_boilerplate_menu().
  */
-function drupal7_module_boilerplate_access()
-{
-    return true;
+function drupal7_module_boilerplate_access() {
+  return true;
 }
 
 /**
  * Page callback function. Defined in drupal7_module_boilerplate_menu().
  */
-function drupal7_module_boilerplate_custompage()
-{
-    if ($cachedItems = cache_get('drupal7_module_boilerplate:items')) {
-        $items = $cachedItems->data;
-    } else {
-        $result = drupal7_module_boilerplate_contents();
-        $items = array();
-        foreach( $result as $node ) {
-            $items[] = array('title' => $node->title, 'url' => drupal_get_path_alias('node/' . $node->nid), 'date' => format_date($node->created, 'medium', 'd.m.Y'));
-        }
-
-        // adding items to default cache and setting it to expire after 5mins
-        cache_set('drupal7_module_boilerplate:items', $items, 'cache', time()+300);
+function drupal7_module_boilerplate_custompage() {
+  if ($cachedItems = cache_get('drupal7_module_boilerplate:items')) {
+    $items = $cachedItems->data;
+  } else {
+    $result = drupal7_module_boilerplate_contents();
+    $items = array();
+    foreach( $result as $node ) {
+      $items[] = array(
+        'title' => $node->title, 
+        'url' => drupal_get_path_alias('node/' . $node->nid), 
+        'date' => format_date($node->created, 'medium', 'd.m.Y'),
+      );
     }
 
-    // pass $items to templat drupal7_module_boilerplate-custompagee.tpl.php
-    return theme('drupal7_module_boilerplate-custompage', array('items' => $items));
+    // adding items to default cache and setting it to expire after 5mins
+    cache_set('drupal7_module_boilerplate:items', $items, 'cache', time()+300);
+  }
+
+  // pass $items to templat drupal7_module_boilerplate-custompagee.tpl.php
+  return theme('drupal7_module_boilerplate-custompage', array('items' => $items));
 }
 
 /**
  * Implements hook_block_info()
  */
-function drupal7_module_boilerplate_block_info()
-{
-    $blocks['d7_boilerplate-articles'] = array(
-        // this text is shown under admin/structure/block
-        'info' => t('Drupal 7 Module Boilerplate'),
-        'cache' => DRUPAL_CACHE_PER_ROLE,
-    );
-    return $blocks;
+function drupal7_module_boilerplate_block_info() {
+  $blocks['d7_boilerplate-articles'] = array(
+    // this text is shown under admin/structure/block
+    'info' => t('Drupal 7 Module Boilerplate'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+
+  return $blocks;
 }
 
 /**
  * Implements hook_block_view()
  */
-function drupal7_module_boilerplate_block_view($delta='')
-{
-    switch ($delta) {
-        case 'd7_boilerplate-articles':
-            $block['subject'] = t('Articles');
-            if (user_access('access content')) {
-                $result = drupal7_module_boilerplate_contents();
-                $items = array();
-                foreach ($result as $node) {
-                    $items[] = array('link' => l($node->title, 'node/' . $node->nid));
-                }
+function drupal7_module_boilerplate_block_view($delta='') {
+  switch ($delta) {
+    case 'd7_boilerplate-articles':
+      $block['subject'] = t('Articles');
+      if (user_access('access content')) {
+        $result = drupal7_module_boilerplate_contents();
+        $items = array();
+        foreach ($result as $node) {
+          $items[] = array('link' => l($node->title, 'node/' . $node->nid));
+        }
 
-                if (empty($items)) {
-                    $block['content'] = t('No articles available.');
-                } else {
-                    // pass $items and drupal7_module_boilerplate_form to template drupal7_module_boilerplate-block.tpl.php
-                    $block['content'] = theme( 'drupal7_module_boilerplate-block', array('items' => $items, 'form' => drupal_get_form('drupal7_module_boilerplate_form')) );
-                }
-            }
-            return $block;
+        if (empty($items)) {
+          $block['content'] = t('No articles available.');
+        } else {
+          // pass $items and drupal7_module_boilerplate_form to template drupal7_module_boilerplate-block.tpl.php
+          $block['content'] = theme( 'drupal7_module_boilerplate-block', array('items' => $items, 'form' => drupal_get_form('drupal7_module_boilerplate_form')) );
+        }
+      }
+
+      return $block;
     }
 }
 
@@ -172,23 +169,22 @@ function drupal7_module_boilerplate_block_view($delta='')
  * Implements hook_form()
  *
  */
-function drupal7_module_boilerplate_form($form, &$form_state)
-{
-    $form = array();
+function drupal7_module_boilerplate_form($form, &$form_state) {
+  $form = array();
  
-    $form['textfield'] = array(
-        '#name' => 'text',
-        '#type' => 'textfield',
-        '#size' => '10',
-        '#autocomplete_path' => 'articles/autocomplete'
-    );
+  $form['textfield'] = array(
+    '#name' => 'text',
+    '#type' => 'textfield',
+    '#size' => '10',
+    '#autocomplete_path' => 'articles/autocomplete',
+  );
  
-    $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => 'Submit'
-    );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit'
+  );
     
-    return $form;
+  return $form;
 }
 
 /**
@@ -196,60 +192,56 @@ function drupal7_module_boilerplate_form($form, &$form_state)
  * JSON output is reachable under the path /articles/autocomplete
  * @see drupal7_module_boilerplate_menu()
  */
-function drupal7_module_boilerplate_autocomplete()
-{
-    return drupal_json_output(array('lorem ipsum'=>'lorem ipsum', 'test'=>'test', 'lorem test'=>'lorem test'));
+function drupal7_module_boilerplate_autocomplete() {
+  return drupal_json_output(array('lorem ipsum'=>'lorem ipsum', 'test'=>'test', 'lorem test'=>'lorem test'));
 }
 
 /**
  * Implements hook_views_api()
  */
-function drupal7_module_boilerplate_views_api()
-{
-    return array(
-        'api' => '3.0'
-    );
+function drupal7_module_boilerplate_views_api() {
+  return array(
+    'api' => '3.0'
+  );
 }
 
 /**
  * Implements hook_views_default_views()
  */
-function drupal7_module_boilerplate_views_default_views()
-{
-    $views = array();
+function drupal7_module_boilerplate_views_default_views() {
+  $views = array();
 
-    // keeping the views in separate files means including all the views in directory /views
-    $path = './' . drupal_get_path('module', 'drupal7_module_boilerplate') . '/views/*.inc';
-    foreach (glob($path) as $views_filename) {
-        require_once($views_filename);
-    }
+  // keeping the views in separate files means including all the views in directory /views
+  $path = './' . drupal_get_path('module', 'drupal7_module_boilerplate') . '/views/*.inc';
+  foreach (glob($path) as $views_filename) {
+    require_once($views_filename);
+  }
 
-    return $views;
+  return $views;
 }
 
 /**
  * Implements hook_ctools_plugin_api()
  * Lets ctools know that this plugin has something for it.
  */
-function drupal7_module_boilerplate_ctools_plugin_api($module, $api)
-{
-    if ($module == 'page_manager' && $api == 'pages_default') {
-        return array('version' => 1);
-    }
+function drupal7_module_boilerplate_ctools_plugin_api($module, $api) {
+  if ($module == 'page_manager' && $api == 'pages_default') {
+    return array('version' => 1);
+  }
 }
 
 /**
  * Adds all pages/panels from panels directory to $pages array.
  * The pages are visible in the page manager with the note "in code".
  */
-function drupal7_module_boilerplate_default_page_manager_pages()
-{
-    $pages = array();
-    $path = './' . drupal_get_path('module', 'drupal7_module_boilerplate') . '/panels/*.inc';
-    foreach (glob($path) as $panels_filename) {
-        require_once($panels_filename);
-        $pages[$page->name] = $page;
-    }
-    return $pages;
+function drupal7_module_boilerplate_default_page_manager_pages() {
+  $pages = array();
+  $path = './' . drupal_get_path('module', 'drupal7_module_boilerplate') . '/panels/*.inc';
+  foreach (glob($path) as $panels_filename) {
+    require_once($panels_filename);
+    $pages[$page->name] = $page;
+  }
+
+  return $pages;
 }
 

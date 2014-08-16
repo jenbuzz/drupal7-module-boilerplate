@@ -3,48 +3,46 @@
 /**
  * Implements hook_schema()
  */
-function drupal7_module_boilerplate_schema()
-{
-    $schema['boilerplate'] = array(
-        'description' => 'Table description.',
-        'fields' => array(
-            'id' => array(
-                'type' => 'serial',
-                'unsigned' => true,
-                'not null' => true,
-                'description' => 'primary key'
-            ),
-            'title' => array(
-                'type' => 'varchar',
-                'length' => 255,
-                'not null' => true,
-                'default' => '',
-                'description' => 'varchar field',
-                'translatable' => TRUE
-            ),
-            'body' => array(
-                'type' => 'text',
-                'not null' => true,
-                'size' => 'big',
-                'description' => 'text field'
-            )
-        ),
-        'primary key' => array('id'),
-        'indexes' => array(
-            'list' => array('title')
-        ),
-    );
+function drupal7_module_boilerplate_schema() {
+  $schema['boilerplate'] = array(
+    'description' => 'Table description.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => true,
+        'not null' => true,
+        'description' => 'primary key',
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => true,
+        'default' => '',
+        'description' => 'varchar field',
+        'translatable' => TRUE,
+      ),
+      'body' => array(
+        'type' => 'text',
+        'not null' => true,
+        'size' => 'big',
+        'description' => 'text field',
+      )
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'list' => array('title'),
+    ),
+  );
   
-    return $schema;
+  return $schema;
 }
 
 /**
  * Implemets hook_update_N()
  */
-function drupal7_module_boilerplate_update_1()
-{
-    db_create_table('boilerplate', drupal_get_schema_unprocessed('drupal7_module_boilerplate', 'boilerplate'));
+function drupal7_module_boilerplate_update_1() {
+  db_create_table('boilerplate', drupal_get_schema_unprocessed('drupal7_module_boilerplate', 'boilerplate'));
 
-    return t('The table boilerplate was added.');
+  return t('The table boilerplate was added.');
 }
 

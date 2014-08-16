@@ -1,13 +1,9 @@
 <div>
     <ul>
-    <?php
-
-        foreach ($items AS $item) {
-            echo '<li>'.$item['link'].'</li>';
-        }
-
-    ?>
+    <?php foreach ($items AS $item): ?>
+      <li><?php print $item['link']; ?></li>
+    <?php endforeach; ?>
     </ul>
 
-    <?php echo render($form); ?>
+    <?php print render($form); ?>
 </div>
