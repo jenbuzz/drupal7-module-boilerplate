@@ -142,7 +142,7 @@ function drupal7_module_boilerplate_block_info() {
 /**
  * Implements hook_block_view()
  */
-function drupal7_module_boilerplate_block_view($delta='') {
+function drupal7_module_boilerplate_block_view($delta = '') {
   switch ($delta) {
     case 'd7_boilerplate-articles':
       $block['subject'] = t('Articles');
@@ -181,7 +181,7 @@ function drupal7_module_boilerplate_form($form, &$form_state) {
  
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => 'Submit'
+    '#value' => 'Submit',
   );
     
   return $form;
@@ -193,7 +193,11 @@ function drupal7_module_boilerplate_form($form, &$form_state) {
  * @see drupal7_module_boilerplate_menu()
  */
 function drupal7_module_boilerplate_autocomplete() {
-  return drupal_json_output(array('lorem ipsum'=>'lorem ipsum', 'test'=>'test', 'lorem test'=>'lorem test'));
+  return drupal_json_output(array(
+    'lorem ipsum' => 'lorem ipsum', 
+    'test' => 'test', 
+    'lorem test' => 'lorem test',
+  ));
 }
 
 /**
@@ -201,7 +205,7 @@ function drupal7_module_boilerplate_autocomplete() {
  */
 function drupal7_module_boilerplate_views_api() {
   return array(
-    'api' => '3.0'
+    'api' => '3.0',
   );
 }
 

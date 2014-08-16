@@ -23,7 +23,7 @@ function drupal7_module_boilerplate_admin_validate($form, &$form_state) {
 
   if (!is_numeric($limit)) {
     form_set_error('drupal7_module_boilerplate_limit', t('You must enter an integer for the maximum number of links.'));
-  } elseif($limit<0) {
+  } elseif($limit < 0) {
     form_set_error('drupal7_module_boilerplate_limit', t('Maximum number of links must be a positive number.'));
   }
 }

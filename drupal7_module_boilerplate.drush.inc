@@ -26,7 +26,7 @@ function drupal7_module_boilerplate_drush_command() {
 /**
  * Callback function.
  */
-function drupal7_module_boilerplate_command($who=false) {
+function drupal7_module_boilerplate_command($who = false) {
   $text = "Hello ";
   if ($who) {
     $text.= $who;
@@ -35,7 +35,7 @@ function drupal7_module_boilerplate_command($who=false) {
   }
 
   $repeat = drush_get_option('repeat', 1);
-  for ($i=0; $i<$repeat; $i++) {
+  for ($i = 0; $i < $repeat; $i++) {
     drupal_set_message(t($text));
   }
 }
