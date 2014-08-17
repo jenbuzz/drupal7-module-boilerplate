@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @see drupal7_module_boilerplate_menu() in drupal7_module_boilerplate.module. 
  */
 function drupal7_module_boilerplate_admin_settings() {
   $form = array();
@@ -17,6 +18,7 @@ function drupal7_module_boilerplate_admin_settings() {
 }
 
 /**
+ * Validate form input on settings page.
  */
 function drupal7_module_boilerplate_admin_validate($form, &$form_state) {
   $limit = $form_state['values']['drupal7_module_boilerplate_limit'];

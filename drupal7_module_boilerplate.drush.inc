@@ -5,7 +5,7 @@
  */
 
 /**
- * Implements hook_drush_command()
+ * Implements hook_drush_command().
  */
 function drupal7_module_boilerplate_drush_command() {
   $items['d7-command'] = array(
@@ -25,6 +25,7 @@ function drupal7_module_boilerplate_drush_command() {
 
 /**
  * Callback function.
+ * @see drupal7_module_boilerplate_drush_command()
  */
 function drupal7_module_boilerplate_command($who = false) {
   $text = "Hello ";

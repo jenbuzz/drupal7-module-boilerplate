@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implements hook_schema()
+ * Implements hook_schema().
  */
 function drupal7_module_boilerplate_schema() {
   $schema['boilerplate'] = array(
@@ -38,7 +38,7 @@ function drupal7_module_boilerplate_schema() {
 }
 
 /**
- * Implemets hook_update_N()
+ * Implemets hook_update_N().
  */
 function drupal7_module_boilerplate_update_1() {
   db_create_table('boilerplate', drupal_get_schema_unprocessed('drupal7_module_boilerplate', 'boilerplate'));
