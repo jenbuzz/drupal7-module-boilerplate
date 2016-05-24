@@ -1,5 +1,5 @@
 name = Drupal 7 Module Boilerplate
-description = This is boilerplate for a custom Drupal 7 module
+description = This is a boilerplate for a custom Drupal 7 module
 core = 7.x
 
 ;add configure link to module
